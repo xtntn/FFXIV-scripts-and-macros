@@ -517,7 +517,7 @@ if IsInZone(129) and GetDistanceToPoint(-84,19,0)<20 then
     end
     yield("/wait 0.501")
   end
-  WaitReady(3, true)
+  WaitReady(3)
 end
 ::ExitInn::
 if IsInZone(177) then
@@ -534,7 +534,7 @@ if IsInZone(177) then
     end
     yield("/wait 0.502")
   end
-  WaitReady(3, true)
+  WaitReady(3)
 end
 ::MoveToAftcastle::
 if IsInZone(128) and GetDistanceToPoint(13,40,13)<20 then
@@ -560,7 +560,7 @@ if IsInZone(128) and GetDistanceToPoint(14,40,71)<9 then
     end
     yield("/wait 0.503")
   end
-  WaitReady(3, true)
+  WaitReady(3)
 end
 
 JobCheck()
@@ -848,7 +848,10 @@ while ( IsInZone(900) or IsInZone(1163) ) and IsAddonVisible("IKDResult")==false
     need_to_move_to_rail = false
 
   ::DoNothing::
-  elseif GetCurrentOceanFishingZoneTimeLeft()<30 or GetCurrentOceanFishingZoneTimeLeft()>420 then
+  elseif GetCurrentOceanFishingZoneTimeLeft()<30 then
+    if current_zone<2 then verbose("Next zone bait: "..ocean_zones[current_zone+1].normal_bait.name) end
+
+  elseif GetCurrentOceanFishingZoneTimeLeft()>420 then
     yield("/wait 0.05")
 
   ::BagCheck::
@@ -1047,7 +1050,7 @@ if type(wait_location)=="string" then
         end
         yield("/wait 0.531")
       end
-      WaitReady(3, true)
+      WaitReady(3)
     end
     RunDiscard(3)
     ::MoveToInn::
@@ -1059,7 +1062,7 @@ if type(wait_location)=="string" then
       end
     end
     ::EnterInn::
-    while IsInZone(128) do
+    while IsInZone(128) and GetDistanceToPoint(13,40,13)<4 do
       verbose("Near inn. Entering.")
       if GetDistanceToPoint(13,40,13)<4 then
         if GetTargetName()~="Mytesyn" then
@@ -1077,7 +1080,7 @@ if type(wait_location)=="string" then
       end
       yield("/wait 0.532")
     end
-    WaitReady(3, true, 32, 177)
+    WaitReady(3, false, 32, 177)
   elseif string.find(string.lower(wait_location),"fc")
   or string.find(string.lower(wait_location),"private")
   or string.find(string.lower(wait_location),"personal")
@@ -1116,7 +1119,7 @@ if type(wait_location)=="string" then
     yield("/wait 1.033")
     yield("/automove off")
     yield("/ays het")
-    WaitReady(3, true)
+    WaitReady(3, false)
     verbose("Inside "..verbose_string.." (hopefully)")
   end
 end
@@ -1167,11 +1170,12 @@ if is_desynth then
     elseif is_clicked_desynth then
       failed_click_tick = failed_click_tick + 1
       if failed_click_tick>4 then
-        is_doing_desynth = false
+        --is_doing_desynth = false
         verbose("Desynth failed!")
         verbose("Closing desynth window")
         yield("/pcall SalvageItemSelector true -1")
         yield("/wait 1")
+        failed_click_tick = 0
       end
     elseif GetCharacterCondition(39, false) then
       for i=1,20 do
@@ -1208,7 +1212,11 @@ if is_desynth then
         end
       end
     end
-    yield("/wait 0.540")
+    if is_clicked_desynth then
+      yield("/wait 0.1045")
+    else
+      yield("/wait 0.540")
+    end
   end
   yield("/pcall SalvageItemSelector true -1")
 end
