@@ -1160,13 +1160,15 @@ if is_desynth then
     elseif not IsAddonReady("SalvageItemSelector") then
       yield("/wait 0.541")
     elseif IsAddonVisible("SalvageDialog") then
-      yield("/pcall SalvageDialog true 0 false")
+      yield("/pcall SalvageDialog true 0 true")
       is_clicked_desynth = false
     elseif IsAddonVisible("SalvageResult") then
       yield("/pcall SalvageResult true 1")
     elseif IsAddonVisible("SalvageAutoDialog") then
       is_clicked_desynth = false
       if string.sub(GetNodeText("SalvageAutoDialog", 27),1,1)=="0" then yield("/pcall SalvageAutoDialog true -1") end
+    elseif GetCharacterCondition(39) then
+      is_clicked_desynth = false
     elseif is_clicked_desynth then
       failed_click_tick = failed_click_tick + 1
       if failed_click_tick>4 then
@@ -1177,7 +1179,7 @@ if is_desynth then
         yield("/wait 1")
         failed_click_tick = 0
       end
-    elseif GetCharacterCondition(39, false) then
+    else
       for i=1,20 do
         if string.gsub(GetNodeText("SalvageItemSelector", 3, 2, 8),"%W","")~="" then
           break
@@ -1212,11 +1214,7 @@ if is_desynth then
         end
       end
     end
-    if is_clicked_desynth then
-      yield("/wait 0.1045")
-    else
-      yield("/wait 0.540")
-    end
+    yield("/wait 0.540")
   end
   yield("/pcall SalvageItemSelector true -1")
 end
