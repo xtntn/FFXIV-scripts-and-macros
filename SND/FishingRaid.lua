@@ -1131,6 +1131,7 @@ WaitReady()
 if is_desynth then
   yield("/tweaks e UiAdjustments@ExtendedDesynthesisWindow")
   verbose("Running desynthesis.")
+    verbose("Do not touch the desynth window!")
   is_doing_desynth = true
   failed_click_tick = 0
   open_desynth_attempts = 0
@@ -1140,6 +1141,7 @@ if is_desynth then
   yield("/wait 0.1")
   while is_doing_desynth do
     verbose("Desynth is running...", true)
+    verbose("Do not touch the desynth window!", true)
     if not IsAddonVisible("SalvageItemSelector") then
       verbose("Opening desynth window")
       yield("/generalaction desynthesis")
