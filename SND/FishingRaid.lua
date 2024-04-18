@@ -509,7 +509,7 @@ if IsInZone(129) and GetDistanceToPoint(-84,19,0)<20 then
     elseif IsAddonVisible("SelectString") then
       yield("/pcall SelectString true 0")
     elseif GetDistanceToTarget()<8 then
-      yield("/pinteract")
+      yield("/interact")
     else
       if IsMoving() then yield("/generalaction Jump") end
       yield("/lockon on")
@@ -530,7 +530,7 @@ if IsInZone(177) then
     else
       yield("/lockon on")
       yield("/automove on")
-      yield("/pinteract")
+      yield("/interact")
     end
     yield("/wait 0.502")
   end
@@ -553,7 +553,7 @@ if IsInZone(128) and GetDistanceToPoint(14,40,71)<9 then
     elseif GetTargetName()~="Aethernet shard" then
       yield("/target Aethernet shard")
     elseif GetDistanceToTarget()<4 then
-      yield("/pinteract")
+      yield("/interact")
     else
       yield("/lockon on")
       yield("/automove on")
@@ -592,7 +592,7 @@ if IsNeedRepair()=="npc" then
       yield("/pcall SelectIconString true 1")
     elseif GetCharacterCondition(32, false) then
       yield("/lockon on")
-      yield("/pinteract")
+      yield("/interact")
     end
     yield("/wait 0.592")
   end
@@ -622,7 +622,7 @@ if IsNeedBait() then
       yield("/pcall SelectIconString true 0")
     elseif GetCharacterCondition(32, false) then
       yield("/lockon on")
-      yield("/pinteract")
+      yield("/interact")
     end
     yield("/wait 0.591")
   end
@@ -718,7 +718,7 @@ if IsInZone(129) and GetDistanceToPoint(-410,4,76)<6.9 then
       yield("/target Dryskthota")
     elseif GetCharacterCondition(32, false) then
       yield("/lockon on")
-      yield("/pinteract")
+      yield("/interact")
     elseif IsAddonVisible("Talk") then
       yield("/click talk")
     elseif IsAddonReady("SelectString") then
@@ -991,7 +991,7 @@ if type(spend_scrips_when_above)=="number" then
       else
         yield("/lockon on")
         yield("/facetarget")
-        yield("/pinteract")
+        yield("/interact")
       end
       yield("/wait 0.521")
     end
@@ -1043,7 +1043,7 @@ if type(wait_location)=="string" then
         elseif GetTargetName()~="Aethernet shard" then
           yield("/target Aethernet shard")
         elseif GetDistanceToTarget()<4 then
-          yield("/pinteract")
+          yield("/interact")
         else
           yield("/lockon on")
           yield("/automove on")
@@ -1069,7 +1069,7 @@ if type(wait_location)=="string" then
           yield("/target Mytesyn")
         elseif GetCharacterCondition(32, false) then
           yield("/lockon on")
-          yield("/pinteract")
+          yield("/interact")
         elseif IsAddonVisible("Talk") then
           yield("/click talk")
         elseif IsAddonVisible("SelectString") then
@@ -1245,7 +1245,7 @@ if not is_single_run then
           yield("/automove on")
         else
           yield("/automove off")
-          yield("/pinteract")
+          yield("/interact")
         end
         yield("/lockon on")
         yield("/wait 0.511")
