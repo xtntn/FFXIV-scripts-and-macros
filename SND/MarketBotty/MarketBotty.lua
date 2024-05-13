@@ -771,7 +771,7 @@ if is_check_for_hq then
   hq = GetNodeText("RetainerSell",18)
   hq = string.gsub(hq,"%g","")
   hq = string.gsub(hq,"%s","")
-  if string.len(hq)==25 then is_hq = true end
+  if string.len(hq)==3 then is_hq = true end
 end
 
 ::PricingLogic::
@@ -789,7 +789,15 @@ if is_price_sanity_checking and target_price < prices_list_length then
   debug("prices_list[target_price] "..prices_list[target_price])
 end
 if is_check_for_hq and is_hq then
-  if not IsNodeVisible("ItemSearchResult", 5, target_price, 13) then
+  target_hq = nil
+  node_hq = nil
+  if target_price==1 then
+    node_hq = 4
+  else
+    node_hq = target_price + 40999
+  end
+  --if not IsNodeVisible("ItemSearchResult", 5, target_price, 13) then
+  if IsNodeVisible("ItemSearchResult", 1, 26, target_price, 2, 3)==true then
     target_price = target_price + 1
     goto PricingLogic
   end
