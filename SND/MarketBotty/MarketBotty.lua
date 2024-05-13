@@ -178,7 +178,8 @@ function ReadOpenItem()
   while item_name_checks < name_rechecks and ( open_item == last_item or open_item == "" ) do
     item_name_checks = item_name_checks + 1
     yield("/wait 0.1")
-    open_item = string.sub(string.gsub(GetNodeText("RetainerSell",18),"%W",""),3,-3)
+    --open_item = string.sub(string.gsub(GetNodeText("RetainerSell",18),"%W",""),3,-3)
+    open_item = string.gsub(GetNodeText("RetainerSell",18),"%W","")
   end
   debug("Last item: "..last_item)
   debug("Open item: "..open_item)
