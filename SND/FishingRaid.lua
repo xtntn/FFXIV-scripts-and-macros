@@ -1137,6 +1137,7 @@ if is_desynth then
   open_desynth_attempts = 0
   desynth_last_item = nil
   desynth_prev_item = nil
+  is_clicked_desynth = false
   item_name = nil
   yield("/wait 0.1")
   while is_doing_desynth do
@@ -1146,8 +1147,9 @@ if is_desynth then
       verbose("Opening desynth window")
       yield("/generalaction desynthesis")
       open_desynth_attempts = open_desynth_attempts + 1
-      if open_desynth_attempts>5 then
+      if open_desynth_attempts>3 then
         is_doing_desynth = false
+        is_clicked_desynth = false
         is_desynth = false
         desynth_last_item = nil
         desynth_prev_item = nil
@@ -1178,9 +1180,11 @@ if is_desynth then
         verbose("Desynth failed!")
         verbose("Closing desynth window")
         yield("/pcall SalvageItemSelector true -1")
-        yield("/wait 1")
+        yield("/wait 2")
         failed_click_tick = 0
       end
+    elseif IsNodeVisible("SalvageItemSelector",1,13) or if IsNodeVisible("SalvageItemSelector",1,12,2) then then
+      is_doing_desynth = false
     else
       for i=1,20 do
         if string.gsub(GetNodeText("SalvageItemSelector", 3, 2, 8),"%W","")~="" then
