@@ -33,6 +33,7 @@ bait_and_switch = true  --Uses /bait command from SimpleTweaks
 force_autohook_presets = true
 is_recast_on_spectral = true  --Cancels cast when spectral current starts
 is_leveling = "auto"  --false, "auto"
+is_spam_next_zone_bait = false  --Spam chat with the bait for the next zone. Might not work?
 
 -- Getting off the boat
 score_screen_delay = 3  --How long in seconds to wait once the final score is displayed.
@@ -849,7 +850,9 @@ while ( IsInZone(900) or IsInZone(1163) ) and IsAddonVisible("IKDResult")==false
 
   ::DoNothing::
   elseif GetCurrentOceanFishingZoneTimeLeft()<30 then
-    if current_zone<2 then verbose("Next zone bait: "..ocean_zones[current_zone+1].normal_bait.name) end
+    if current_zone<2 and is_spam_next_zone_bait then 
+      verbose("Next zone bait: "..ocean_zones[current_zone+1].normal_bait.name) 
+    end
 
   elseif GetCurrentOceanFishingZoneTimeLeft()>420 then
     yield("/wait 0.05")
