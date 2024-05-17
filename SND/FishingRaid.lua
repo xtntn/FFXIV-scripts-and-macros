@@ -1183,7 +1183,7 @@ if is_desynth then
         yield("/wait 2")
         failed_click_tick = 0
       end
-    elseif IsNodeVisible("SalvageItemSelector",1,13) or if IsNodeVisible("SalvageItemSelector",1,12,2) then then
+    elseif IsNodeVisible("SalvageItemSelector",1,13) or if IsNodeVisible("SalvageItemSelector",1,12,2) then
       is_doing_desynth = false
     else
       for i=1,20 do
