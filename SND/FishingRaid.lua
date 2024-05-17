@@ -1187,7 +1187,7 @@ if is_desynth then
       failed_click_tick = failed_click_tick + 1
       if failed_click_tick>4 then
         is_doing_desynth = false
-        verbose("Desynth failed!")
+        verbose("Desynth probably finished!")
         verbose("Closing desynth window")
         yield("/pcall SalvageItemSelector true -1")
         yield("/wait 2")
