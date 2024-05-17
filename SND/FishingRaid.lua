@@ -1164,8 +1164,13 @@ if is_desynth then
     elseif not IsAddonReady("SalvageItemSelector") then
       yield("/wait 0.541")
     elseif IsAddonVisible("SalvageDialog") then
-      yield("/pcall SalvageDialog true 0 true")
-      is_clicked_desynth = false
+      while not IsAddonReady("SalvageDialog") do yield("/wait 0.1") end
+      if GetNodeText("SalvageDialog",21)==item_name then
+        yield("/pcall SalvageDialog true 0 true")
+        is_clicked_desynth = false
+      else
+        is_doing_desynth = false
+      end
     elseif IsAddonVisible("SalvageResult") then
       yield("/pcall SalvageResult true 1")
     elseif IsAddonVisible("SalvageAutoDialog") then
