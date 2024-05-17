@@ -1193,8 +1193,10 @@ if is_desynth then
         yield("/wait 2")
         failed_click_tick = 0
       end
-    elseif IsNodeVisible("SalvageItemSelector",1,13) or if IsNodeVisible("SalvageItemSelector",1,12,2) then
+    elseif IsNodeVisible("SalvageItemSelector",1,13) or IsNodeVisible("SalvageItemSelector",1,12,2) then
+      verbose("Desynth finished!")
       is_doing_desynth = false
+      yield("/pcall SalvageItemSelector true -1")
     else
       for i=1,20 do
         if string.gsub(GetNodeText("SalvageItemSelector", 3, 2, 8),"%W","")~="" then
