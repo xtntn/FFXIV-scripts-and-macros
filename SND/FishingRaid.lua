@@ -1170,7 +1170,11 @@ if is_desynth then
         yield("/pcall SalvageDialog true 0 true")
         is_clicked_desynth = false
       else
+        verbose("Empty SalvageDialogue window!")
+        verbose("Ending desynth!")
         is_doing_desynth = false
+        yield("/pcall SalvageDialog true -1")
+        yield("/pcall SalvageItemSelector true -1")
       end
     elseif IsAddonVisible("SalvageResult") then
       yield("/pcall SalvageResult true 1")
