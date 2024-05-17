@@ -1166,7 +1166,7 @@ if is_desynth then
     elseif IsAddonVisible("SalvageDialog") then
       while not IsAddonReady("SalvageDialog") do yield("/wait 0.1") end
       --if GetNodeText("SalvageDialog",21)==item_name then
-      if string.gsub(GetNodeText("SalvageDialog",19),"%D","")~="000"
+      if string.gsub(GetNodeText("SalvageDialog",19),"%D","")~="000" then
         yield("/pcall SalvageDialog true 0 true")
         is_clicked_desynth = false
       else
