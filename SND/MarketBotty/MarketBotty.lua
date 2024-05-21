@@ -771,7 +771,11 @@ if is_check_for_hq then
   hq = GetNodeText("RetainerSell",18)
   hq = string.gsub(hq,"%g","")
   hq = string.gsub(hq,"%s","")
-  if string.len(hq)==3 then is_hq = true end
+  if string.len(hq)==3 then
+    is_hq = true
+  else
+    is_hq = false
+  end
 end
 
 ::PricingLogic::
