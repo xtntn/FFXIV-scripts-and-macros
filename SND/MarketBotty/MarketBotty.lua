@@ -797,7 +797,7 @@ if is_check_for_hq and is_hq then
     node_hq = target_price + 40999
   end
   --if not IsNodeVisible("ItemSearchResult", 5, target_price, 13) then
-  if IsNodeVisible("ItemSearchResult", 1, 26, target_price, 2, 3)==true then
+  if IsNodeVisible("ItemSearchResult", 1, 26, node_hq, 2, 3)==true then
     target_price = target_price + 1
     goto PricingLogic
   end
