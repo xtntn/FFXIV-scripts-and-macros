@@ -29,7 +29,7 @@ is_using_blacklist = true --Whether or not to use the blacklist_retainers list.
 history_trim_amount = 5 --Trims this many from highest and lowest in history list
 history_multiplier = "round" --if no active sales then get average historical price and multiply
 is_using_overrides = true --item_overrides table.
-is_check_for_hq = false --Should work now
+is_check_for_hq = false --Not working yet :(
 
 is_override_report = true
 is_postrun_one_gil_report = true  --Requires is_verbose
@@ -793,8 +793,6 @@ if is_price_sanity_checking and target_price < prices_list_length then
   debug("prices_list[target_price] "..prices_list[target_price])
 end
 if is_check_for_hq and is_hq then
-  target_hq = nil
-  node_hq = nil
   if target_price==1 then
     node_hq = 4
   else
