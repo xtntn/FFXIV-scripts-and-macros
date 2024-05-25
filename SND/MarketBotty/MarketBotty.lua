@@ -430,7 +430,7 @@ function EnterHouse()
       yield("/target Entrance")
       yield("/target Apartment Building Entrance")
     end
-    yield("/wait 0.5")
+    yield("/wait 1")
     if string.find(string.lower(GetTargetName()), "entrance") then
       while IsInZone(339) or IsInZone(340) or IsInZone(341) or IsInZone(641) or IsInZone(979) or IsInZone(136) do
         if not is_use_ar_to_enter_house then
