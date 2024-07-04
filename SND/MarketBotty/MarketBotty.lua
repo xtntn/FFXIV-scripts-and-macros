@@ -466,10 +466,10 @@ function OpenBell()
     elseif GetDistanceToTarget()<20 then
       yield("/lockon on")
       yield("/automove on")
-      yield("/pinteract")
+      yield("/interact")
     else
       yield("/automove off")
-      yield("/pinteract")
+      yield("/interact")
     end
     yield("/lockon on")
     yield("/wait 0.511")
