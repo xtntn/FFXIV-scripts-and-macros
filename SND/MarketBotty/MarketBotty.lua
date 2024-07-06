@@ -117,7 +117,7 @@ end
 function OpenRetainer(r)
   if not IsAddonVisible("RetainerList") then SomethingBroke("RetainerList", "OpenRetainer("..r..")") end
   yield("/wait 0.3")
-  yield("/click select_retainer"..r)
+  yield("/click RetainerList_Retainer"..r)
   yield("/wait 0.5")
   while IsAddonVisible("SelectString")==false do
     if IsAddonVisible("Talk") then yield("/click talk") end
@@ -125,7 +125,7 @@ function OpenRetainer(r)
   end
   if not IsAddonVisible("SelectString") then SomethingBroke("SelectString", "OpenRetainer("..r..")") end
   yield("/wait 0.3")
-  yield("/click select_string4")
+  yield("/callback SelectString true 3")
   if not IsAddonVisible("RetainerSellList") then SomethingBroke("RetainerSellList", "OpenRetainer("..r..")") end
 end
 
@@ -679,7 +679,7 @@ elseif IsAddonVisible("RetainerSell") then
   goto RepeatItem
 elseif IsAddonVisible("SelectString") then
   echo("Starting in single retainer mode!")
-  yield("/click select_string3")
+  yield("/callback SelectString true 2")
   yield("/waitaddon RetainerSellList")
   is_single_retainer_mode = true
   goto Sales
