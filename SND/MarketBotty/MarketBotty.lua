@@ -346,7 +346,9 @@ end
 
 function SetPrice(price)
   debug("Setting price to: "..price)
-  yield("/callback ItemSearchResult true -1")
+  if IsAddonVisible("ItemSearchResult") then
+    yield("/callback ItemSearchResult true -1")
+  end
   yield("/callback RetainerSell true 2 "..price)
   yield("/callback RetainerSell true 0")
   CloseSales()
