@@ -443,6 +443,14 @@ elseif IsInZone(129) or IsInZone(128) then
 elseif fishing_character~="auto" and fishing_character~=GetCharacterName(true) then
   goto MainWait
 else
+  if os.date("!*t").hour%2==1 then
+    time_remaining = 55 - os.date("!*t").min .." minutes."
+  elseif os.date("!*t").min<=55 then
+    time_remaining = "1 hour and ".. 55 - os.date("!*t").min .." minutes"
+  else
+    time_remaining = 115 - os.date("!*t").min .." minutes"
+  end
+  verbose(time_remaining .." until the next boat.")
   goto StartAR
 end
 
@@ -463,11 +471,14 @@ while not TimeCheck(false) do
   yield("/wait 1.001")
 end
 
+
+yield("/vnavmesh stop")
+yield("/visland stop")
 yield("/ays multi d")
 while GetCharacterCondition(50) do
   if IsAddonVisible("RetainerList") then
     verbose("Closing retainer list.")
-    yield("/pcall RetainerList true -1")
+    yield("/callback RetainerList true -1")
   end
   yield("/wait 1.004")
 end
@@ -504,11 +515,11 @@ if IsInZone(129) and GetDistanceToPoint(-84,19,0)<20 then
   verbose("Limsa aetheryte plaza. Aethernet to arcanists guild.")
   while GetDistanceToPoint(-84,19,0)<20 do
     if IsAddonVisible("TelepotTown") then
-      yield("/pcall TelepotTown true 11 3u")
+      yield("/callback TelepotTown true 11 3u")
     elseif GetTargetName()~="aetheryte" then
       yield("/target aetheryte")
     elseif IsAddonVisible("SelectString") then
-      yield("/pcall SelectString true 0")
+      yield("/callback SelectString true 0")
     elseif GetDistanceToTarget()<8 then
       yield("/interact")
     else
@@ -527,7 +538,7 @@ if IsInZone(177) then
     if GetTargetName()~="Heavy Oaken Door" then
       yield("/target Heavy Oaken Door")
     elseif IsAddonVisible("SelectYesno") then
-      yield("/pcall SelectYesno true 0")
+      yield("/callback SelectYesno true 0")
     else
       yield("/lockon on")
       yield("/automove on")
@@ -550,7 +561,7 @@ if IsInZone(128) and GetDistanceToPoint(14,40,71)<9 then
   verbose("At aftcastle. Aethernet to arcanists guild.")
   while IsInZone(128) do
     if IsAddonVisible("TelepotTown") then
-      yield("/pcall TelepotTown true 11 3u")
+      yield("/callback TelepotTown true 11 3u")
     elseif GetTargetName()~="Aethernet shard" then
       yield("/target Aethernet shard")
     elseif GetDistanceToTarget()<4 then
@@ -590,7 +601,7 @@ if IsNeedRepair()=="npc" then
     if GetTargetName()~="Merchant & Mender" then
       yield("/target Merchant & Mender")
     elseif IsAddonVisible("SelectIconString") then
-      yield("/pcall SelectIconString true 1")
+      yield("/callback SelectIconString true 1")
     elseif GetCharacterCondition(32, false) then
       yield("/lockon on")
       yield("/interact")
@@ -600,12 +611,12 @@ if IsNeedRepair()=="npc" then
   while IsAddonVisible("Repair") do
     if string.gsub(GetNodeText("Repair",2),"%D","")~="0" then
       if IsAddonVisible("SelectYesno") then
-        yield("/pcall SelectYesno true 0")
+        yield("/callback SelectYesno true 0")
       else
-        yield("/pcall Repair true 0")
+        yield("/callback Repair true 0")
       end
     else
-      yield("/pcall Repair true -1")
+      yield("/callback Repair true -1")
       yield("/lockon off")
     end
     yield("/wait 0.305")
@@ -620,7 +631,7 @@ if IsNeedBait() then
     if GetTargetName()~="Merchant & Mender" then
       yield("/target Merchant & Mender")
     elseif IsAddonVisible("SelectIconString") then
-      yield("/pcall SelectIconString true 0")
+      yield("/callback SelectIconString true 0")
     elseif GetCharacterCondition(32, false) then
       yield("/lockon on")
       yield("/interact")
@@ -628,29 +639,29 @@ if IsNeedBait() then
     yield("/wait 0.591")
   end
   if is_purchase_ragworm then
-    yield("/pcall Shop true 0 0 99")
+    yield("/callback Shop true 0 0 99")
     is_purchase_ragworm = false
     yield("/wait 0.5")
-    if IsAddonVisible("SelectYesno") then yield("/pcall SelectYesno true 0") end
+    if IsAddonVisible("SelectYesno") then yield("/callback SelectYesno true 0") end
     yield("/wait 0.5")
   end
   if is_purchase_krill then
-    yield("/pcall Shop true 0 1 99")
+    yield("/callback Shop true 0 1 99")
     is_purchase_krill = false
     yield("/wait 0.5")
-    if IsAddonVisible("SelectYesno") then yield("/pcall SelectYesno true 0") end
+    if IsAddonVisible("SelectYesno") then yield("/callback SelectYesno true 0") end
     yield("/wait 0.5")
   end
   if is_purchase_plump then
-    yield("/pcall Shop true 0 2 99")
+    yield("/callback Shop true 0 2 99")
     is_purchase_plump = false
     yield("/wait 0.5")
-    if IsAddonVisible("SelectYesno") then yield("/pcall SelectYesno true 0") end
+    if IsAddonVisible("SelectYesno") then yield("/callback SelectYesno true 0") end
     yield("/wait 0.5")
   end
   goto BuyBait
 elseif IsAddonVisible("Shop") then
-  yield("/pcall Shop true -1")
+  yield("/callback Shop true -1")
   yield("/lockon off")
   goto BuyBait
 end
@@ -671,15 +682,15 @@ if IsNeedRepair()=="self" then
     yield("/generalaction repair")
     yield("/wait 0.5")
   end
-  yield("/pcall Repair true 0")
+  yield("/callback Repair true 0")
   yield("/wait 0.1")
   if IsAddonVisible("SelectYesno") then
-    yield("/pcall SelectYesno true 0")
+    yield("/callback SelectYesno true 0")
     yield("/wait 0.1")
   end
   while GetCharacterCondition(39) do yield("/wait 1") end
   yield("/wait 1")
-  yield("/pcall Repair true -1")
+  yield("/callback Repair true -1")
 end
 
 ::WaitForBoat::
@@ -721,15 +732,15 @@ if IsInZone(129) and GetDistanceToPoint(-410,4,76)<6.9 then
       yield("/lockon on")
       yield("/interact")
     elseif IsAddonVisible("Talk") then
-      yield("/click talk")
+      yield("/click Talk_Click")
     elseif IsAddonReady("SelectString") then
       if GetSelectStringText(0)=="Register to board." then
-        yield("/pcall SelectString true 0")
+        yield("/callback SelectString true 0")
       else
-        yield("/pcall SelectString true "..q)
+        yield("/callback SelectString true "..q)
       end
     elseif IsAddonVisible("SelectYesno") then
-      yield("/pcall SelectYesno true 0")
+      yield("/callback SelectYesno true 0")
     end
     yield("/wait 0.511")
   end
@@ -746,7 +757,7 @@ while GetCharacterCondition(91) do
   verbose("Waiting for queue to pop.", true)
   if IsAddonVisible("ContentsFinderConfirm") then
     JobCheck()
-    yield("/pcall ContentsFinderConfirm true 8")
+    yield("/callback ContentsFinderConfirm true 8")
   end
   yield("/wait 1.007")
 end
@@ -758,13 +769,11 @@ end
 
 ::PrepareRandom::
 need_to_move_to_rail = true
+math.randomseed(os.time())
 move_y = math.random(-11000,5000)/1000
 move_z = 6.750
-if math.ceil(move_y)%2==1 then
-  move_x = 7.5
-else
-  move_x = -7.5
-end
+if GetPlayerRawXPos()>0 then move_x = 7.5 else move_x = -7.5 end
+if move_x==7.5 and move_y<-2 and move_y>-4 then goto PrepareRandom end
 verbose("move_x: "..move_x)
 verbose("move_y: "..move_y)
 
@@ -953,7 +962,7 @@ if IsAddonVisible("IKDResult") then
         end
       end
       points_earned = tonumber(points_earned_string)
-      yield("/pcall IKDResult true 0")
+      yield("/callback IKDResult true 0")
       yield("/wait 1")
     end
     yield("/wait 0.266")
@@ -989,7 +998,7 @@ if type(spend_scrips_when_above)=="number" then
       if GetTargetName()~="Scrip Exchange" then
         yield("/target Scrip Exchange")
       elseif IsAddonVisible("SelectIconString") then
-        yield("/pcall SelectIconString true 0")
+        yield("/callback SelectIconString true 0")
         yield("/visland stop")
       else
         yield("/lockon on")
@@ -999,28 +1008,28 @@ if type(spend_scrips_when_above)=="number" then
       yield("/wait 0.521")
     end
     yield("/lockon off")
-    yield("/pcall InclusionShop true 12 "..scrip_category)
+    yield("/callback InclusionShop true 12 "..scrip_category)
     yield("/wait 0.522")
-    yield("/pcall InclusionShop true 13 "..scrip_subcategory)
+    yield("/callback InclusionShop true 13 "..scrip_subcategory)
     yield("/wait 1.021")
     scrips_raw = string.gsub(GetNodeText("InclusionShop", 21),"%D","")
     scrips_owned = tonumber(scrips_raw)
     for item=21, 36 do
-      scrip_shop_item_name = string.sub(string.gsub(GetNodeText("InclusionShop", 5, item, 12),"%G",""),5,-3)
+      scrip_shop_item_name = string.gsub(GetNodeText("InclusionShop", 5, item, 12),"%G","")
       if scrip_shop_item_name==string.gsub(scrip_item_to_buy,"%G","") then
         price_raw = string.gsub(GetNodeText("InclusionShop", 5, item, 5, 1),"%D","")
         scrip_shop_item_price = tonumber(price_raw)
         scrip_number_to_buy = scrips_owned//scrip_shop_item_price
-        yield("/pcall InclusionShop true 14 "..item-21 .." "..scrip_number_to_buy)
+        yield("/callback InclusionShop true 14 "..item-21 .." "..scrip_number_to_buy)
         yield("/wait 1.022")
         if IsAddonVisible("ShopExchangeItemDialog") then
-          yield("/pcall ShopExchangeItemDialog true 0")
+          yield("/callback ShopExchangeItemDialog true 0")
           yield("/wait 1.023")
         end
         break
       end
     end
-    yield("/pcall InclusionShop true -1")
+    yield("/callback InclusionShop true -1")
   end
 end
 
@@ -1042,7 +1051,7 @@ if type(wait_location)=="string" then
       verbose("At arcanists guild. Aethernet to aftcastle.")
       while IsInZone(129) do
         if IsAddonVisible("TelepotTown") then
-          yield("/pcall TelepotTown true 11 1u")
+          yield("/callback TelepotTown true 11 1u")
         elseif GetTargetName()~="Aethernet shard" then
           yield("/target Aethernet shard")
         elseif GetDistanceToTarget()<4 then
@@ -1074,11 +1083,11 @@ if type(wait_location)=="string" then
           yield("/lockon on")
           yield("/interact")
         elseif IsAddonVisible("Talk") then
-          yield("/click talk")
+          yield("/click Talk_Click")
         elseif IsAddonVisible("SelectString") then
-          yield("/pcall SelectString true 0")
+          yield("/callback SelectString true 0")
         elseif IsAddonVisible("SelectYesno") then
-          yield("/pcall SelectYesno true 0")
+          yield("/callback SelectYesno true 0")
         end
       end
       yield("/wait 0.532")
@@ -1162,7 +1171,7 @@ if is_desynth then
     elseif desynth_prev_item~=nil and item_name and desynth_last_item==item_name and desynth_prev_item==item_name then
       verbose("Repeat item bug?")
       verbose("Closing desynth window")
-      yield("/pcall SalvageItemSelector true -1")
+      yield("/callback SalvageItemSelector true -1")
       yield("/wait 1")
     elseif not IsAddonReady("SalvageItemSelector") then
       yield("/wait 0.541")
@@ -1170,20 +1179,20 @@ if is_desynth then
       while not IsAddonReady("SalvageDialog") do yield("/wait 0.1") end
       --if GetNodeText("SalvageDialog",21)==item_name then
       if string.gsub(GetNodeText("SalvageDialog",19),"%D","")~="000" then
-        yield("/pcall SalvageDialog true 0 true")
+        yield("/callback SalvageDialog true 0 true")
         is_clicked_desynth = false
       else
         verbose("Empty SalvageDialogue window!")
         verbose("Ending desynth!")
         is_doing_desynth = false
-        yield("/pcall SalvageDialog true -1")
-        yield("/pcall SalvageItemSelector true -1")
+        yield("/callback SalvageDialog true -1")
+        yield("/callback SalvageItemSelector true -1")
       end
     elseif IsAddonVisible("SalvageResult") then
-      yield("/pcall SalvageResult true 1")
+      yield("/callback SalvageResult true 1")
     elseif IsAddonVisible("SalvageAutoDialog") then
       is_clicked_desynth = false
-      if string.sub(GetNodeText("SalvageAutoDialog", 27),1,1)=="0" then yield("/pcall SalvageAutoDialog true -1") end
+      if string.sub(GetNodeText("SalvageAutoDialog", 27),1,1)=="0" then yield("/callback SalvageAutoDialog true -1") end
     elseif GetCharacterCondition(39) then
       is_clicked_desynth = false
     elseif is_clicked_desynth then
@@ -1192,14 +1201,14 @@ if is_desynth then
         is_doing_desynth = false
         verbose("Desynth probably finished!")
         verbose("Closing desynth window")
-        yield("/pcall SalvageItemSelector true -1")
+        yield("/callback SalvageItemSelector true -1")
         yield("/wait 2")
         failed_click_tick = 0
       end
     elseif IsNodeVisible("SalvageItemSelector",1,13) or IsNodeVisible("SalvageItemSelector",1,12,2) then
       verbose("Desynth finished!")
       is_doing_desynth = false
-      yield("/pcall SalvageItemSelector true -1")
+      yield("/callback SalvageItemSelector true -1")
     else
       for i=1,20 do
         if string.gsub(GetNodeText("SalvageItemSelector", 3, 2, 8),"%W","")~="" then
@@ -1226,7 +1235,7 @@ if is_desynth then
           verbose("Desynthing: "..item_name)
           verbose("item_level: "..item_level, true)
           verbose("item_type: "..item_type, true)
-          yield("/pcall SalvageItemSelector true 12 "..list-2)
+          yield("/callback SalvageItemSelector true 12 "..list-2)
           is_clicked_desynth = true
           break
         elseif list==16 then
@@ -1238,7 +1247,7 @@ if is_desynth then
     end
     yield("/wait 0.540")
   end
-  yield("/pcall SalvageItemSelector true -1")
+  yield("/callback SalvageItemSelector true -1")
 end
 
 ::WrapUp::
@@ -1254,7 +1263,7 @@ if not is_single_run then
     if ARRetainersWaitingToBeProcessed() then
       target_tick = 1
       while GetCharacterCondition(50, false) do
-        if target_tick > 99 then
+        if target_tick > 9 then
           break
         elseif string.lower(GetTargetName())~="summoning bell" then
           verbose("Finding summoning bell...")
