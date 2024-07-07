@@ -629,6 +629,7 @@ if start_wait and is_autoretainer_while_waiting then
     WaitARFinish()
     yield("/ays multi d")
 end
+after_multi = tostring(after_multi)
 if string.find(after_multi, "wait logout") then
 elseif string.find(after_multi, "wait") then
   multi_wait = string.gsub(after_multi,"%D","") * 60
