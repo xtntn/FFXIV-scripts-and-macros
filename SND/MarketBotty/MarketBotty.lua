@@ -120,20 +120,20 @@ function OpenRetainer(r)
   yield("/click RetainerList_Retainer"..r)
   yield("/wait 0.5")
   while IsAddonVisible("SelectString")==false do
-    if IsAddonVisible("Talk") then yield("/click talk") end
+    if IsAddonVisible("Talk") then yield("/click Talk_Click") end
     yield("/wait 0.1")
   end
   if not IsAddonVisible("SelectString") then SomethingBroke("SelectString", "OpenRetainer("..r..")") end
   yield("/wait 0.3")
-  yield("/callback SelectString true 3")
+  yield("/click SelectString_Entry4")
   if not IsAddonVisible("RetainerSellList") then SomethingBroke("RetainerSellList", "OpenRetainer("..r..")") end
 end
 
 function CloseRetainer()
   while not IsAddonVisible("RetainerList") do
-    if IsAddonVisible("RetainerSellList") then yield("/pcall RetainerSellList true -1") end
-    if IsAddonVisible("SelectString") then yield("/pcall SelectString true -1") end
-    if IsAddonVisible("Talk") then yield("/click talk") end
+    if IsAddonVisible("RetainerSellList") then yield("/callback RetainerSellList true -1") end
+    if IsAddonVisible("SelectString") then yield("/callback SelectString true -1") end
+    if IsAddonVisible("Talk") then yield("/click Talk_Click") end
     yield("/wait 0.1")
   end
 end
@@ -160,10 +160,10 @@ function ClickItem(item)
   CloseSales()
   while IsAddonVisible("RetainerSell")==false do
     if IsAddonVisible("ContextMenu") then
-      yield("/pcall ContextMenu true 0 0")
+      yield("/callback ContextMenu true 0 0")
       yield("/wait 0.2")
     elseif IsAddonVisible("RetainerSellList") then
-      yield("/pcall RetainerSellList true 0 ".. item - 1 .." 1")
+      yield("/callback RetainerSellList true 0 ".. item - 1 .." 1")
     else
       SomethingBroke("RetainerSellList", "ClickItem()")
     end
@@ -189,14 +189,14 @@ function SearchResults()
   if IsAddonVisible("ItemSearchResult")==false then
     yield("/wait 0.1")
     if IsAddonVisible("ItemSearchResult")==false then
-      yield("/pcall RetainerSell true 4")
+      yield("/callback RetainerSell true 4")
     end
   end
   yield("/waitaddon ItemSearchResult")
   if IsAddonVisible("ItemHistory")==false then
     yield("/wait 0.1")
     if IsAddonVisible("ItemHistory")==false then
-      yield("/pcall ItemSearchResult true 0")
+      yield("/callback ItemSearchResult true 0")
     end
   end
   yield("/wait 0.1")
@@ -216,10 +216,10 @@ function SearchResults()
     else
       search_wait_tick = search_wait_tick + 1
       if (search_wait_tick > 50) or (string.find(GetNodeText("ItemSearchResult", 26), "Please wait") and search_wait_tick > 10) then
-        yield("/pcall RetainerSell true 4")
+        yield("/callback RetainerSell true 4")
         yield("/wait 0.1")
         if IsAddonVisible("ItemHistory")==false then
-          yield("/pcall ItemSearchResult true 0")
+          yield("/callback ItemSearchResult true 0")
         end
         yield("/wait 0.1")
         search_wait_tick = 0
@@ -271,7 +271,7 @@ end
 
 function HistoryAverage()
   while IsAddonVisible("ItemHistory")==false do
-    yield("/pcall ItemSearchResult true 0")
+    yield("/callback ItemSearchResult true 0")
     yield("/wait 0.3")
   end
   yield("/waitaddon ItemHistory")
@@ -346,17 +346,17 @@ end
 
 function SetPrice(price)
   debug("Setting price to: "..price)
-  yield("/pcall ItemSearchResult true -1")
-  yield("/pcall RetainerSell true 2 "..price)
-  yield("/pcall RetainerSell true 0")
+  yield("/callback ItemSearchResult true -1")
+  yield("/callback RetainerSell true 2 "..price)
+  yield("/callback RetainerSell true 0")
   CloseSales()
 end
 
 function CloseSearch()
   while IsAddonVisible("ItemSearchResult") or IsAddonVisible("ItemHistory") do
     yield("/wait 0.1")
-    if IsAddonVisible("ItemSearchResult") then yield("/pcall ItemSearchResult true -1") end
-    if IsAddonVisible("ItemHistory") then yield("/pcall ItemHistory true -1") end
+    if IsAddonVisible("ItemSearchResult") then yield("/callback ItemSearchResult true -1") end
+    if IsAddonVisible("ItemHistory") then yield("/callback ItemHistory true -1") end
   end
 end
 
@@ -364,7 +364,7 @@ function CloseSales()
   CloseSearch()
   while IsAddonVisible("RetainerSell") do
     yield("/wait 0.1")
-    if IsAddonVisible("RetainerSell") then yield("/pcall RetainerSell true -1") end
+    if IsAddonVisible("RetainerSell") then yield("/callback RetainerSell true -1") end
   end
 end
 
@@ -466,10 +466,10 @@ function OpenBell()
     elseif GetDistanceToTarget()<20 then
       yield("/lockon on")
       yield("/automove on")
-      yield("/interact")
+      yield("/pinteract")
     else
       yield("/automove off")
-      yield("/interact")
+      yield("/pinteract")
     end
     yield("/lockon on")
     yield("/wait 0.511")
@@ -665,7 +665,7 @@ elseif GetCharacterCondition(50, false) then
 elseif IsAddonVisible("RecommendList") then
   helper_mode = true
   while IsAddonVisible("RecommendList") do
-    yield("/pcall RecommendList true -1")
+    yield("/callback RecommendList true -1")
     yield("/wait 0.1")
   end
   echo("Starting in helper mode!")
@@ -679,7 +679,7 @@ elseif IsAddonVisible("RetainerSell") then
   goto RepeatItem
 elseif IsAddonVisible("SelectString") then
   echo("Starting in single retainer mode!")
-  yield("/callback SelectString true 2")
+  yield("/click SelectString_Entry3")
   yield("/waitaddon RetainerSellList")
   is_single_retainer_mode = true
   goto Sales
@@ -773,8 +773,10 @@ if is_check_for_hq then
   hq = string.gsub(hq,"%s","")
   if string.len(hq)==3 then
     is_hq = true
+    debug("High quality!")
   else
     is_hq = false
+    debug("Normal quality.")
   end
 end
 
@@ -792,14 +794,16 @@ if is_price_sanity_checking and target_price < prices_list_length then
   debug("target_price "..target_price)
   debug("prices_list[target_price] "..prices_list[target_price])
 end
-if is_check_for_hq and is_hq then
+if is_check_for_hq and is_hq and target_price < prices_list_length then
+  debug("Checking listing "..target_price.." for HQ...")
   if target_price==1 then
     node_hq = 4
   else
     node_hq = target_price + 40999
   end
   --if not IsNodeVisible("ItemSearchResult", 5, target_price, 13) then
-  if IsNodeVisible("ItemSearchResult", 1, 26, node_hq, 2, 3)==true then
+  if not IsNodeVisible("ItemSearchResult", 1, 26, node_hq, 2, 3) then
+    debug(target_price.." not HQ")
     target_price = target_price + 1
     goto PricingLogic
   end
@@ -867,7 +871,7 @@ end
 ::MultiMode::
 if is_multimode then
   while IsAddonVisible("RetainerList") do
-    yield("/pcall RetainerList true -1")
+    yield("/callback RetainerList true -1")
     yield("/wait 1")
   end
   NextCharacter()
@@ -885,7 +889,7 @@ if string.find(after_multi, "logout") then
   yield("/logout")
   yield("/waitaddon SelectYesno")
   yield("/wait 0.5")
-  yield("/pcall SelectYesno true 0")
+  yield("/callback SelectYesno true 0")
   while GetCharacterCondition(1) do
     yield("/wait 1.1")
   end
@@ -927,7 +931,7 @@ end
 
 ::EndOfScript::
 while IsAddonVisible("RecommendList") do
-  yield("/pcall RecommendList true -1")
+  yield("/callback RecommendList true -1")
   yield("/wait 0.1")
 end
 echo("---------------------")
