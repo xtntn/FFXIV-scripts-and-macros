@@ -29,7 +29,7 @@ is_wait_to_move = true  --Wait for the barrier to drop before moving to the side
 is_adjust_z = true  --true might cause stuttery movement, false might cause infinite movement. Good luck.
 
 -- Fishing
-bait_and_switch = true  --Uses /bait command from SimpleTweaks
+bait_and_switch = false  --Uses /bait command from SimpleTweaks
 force_autohook_presets = true
 is_recast_on_spectral = true  --Cancels cast when spectral current starts
 is_leveling = "auto"  --false, "auto"

@@ -49,9 +49,9 @@ retainers_file = "my_retainers.txt"
 blacklist_file = "blacklist_retainers.txt"
 overrides_file = "item_overrides.lua"
 
-is_multimode = true --It worked once, which means it's perfect now. Please send any complaints to /dev/null
+is_multimode = false --It worked once, which means it's perfect now. Please send any complaints to /dev/null
 start_wait = false --For when starting script during AR operation.
-after_multi = "logout"  --"logout", "wait 10", "wait logout", number. See readme.
+after_multi = false  --"logout", "wait 10", "wait logout", number. See readme.
 is_autoretainer_while_waiting = false
 multimode_ending_command = "/ays multi e"
 is_use_ar_to_enter_house = true --Breaks if you have subs ready.
